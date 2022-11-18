@@ -31,8 +31,7 @@ public class Etudiant implements Serializable{
 	
 	public Etudiant() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
+ 	}
 
 	public Etudiant(String nom, Date dateNaissance, String email, String photo) {
 		super();

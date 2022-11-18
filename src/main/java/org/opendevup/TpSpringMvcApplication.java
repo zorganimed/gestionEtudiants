@@ -28,7 +28,7 @@ public class TpSpringMvcApplication {
     
     etds.forEach(e-> System.out.println(e.getNom()));
     
-    Page<Etudiant> et= etudiantRepository.chercherEtudiants("%r%",PageRequest.of(0, 2));
+    Page<Etudiant> et= etudiantRepository.chercherEtudiants("%ri%",PageRequest.of(0, 2));
     et.forEach(e-> System.out.println(e.getNom()));
     
     
