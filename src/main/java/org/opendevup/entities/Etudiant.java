@@ -27,18 +27,21 @@ public class Etudiant implements Serializable{
 	@javax.validation.constraints.NotEmpty
 	@Email
 	private String email;
-	private String photo;
+ 	
+	private String picture;
 	
+	
+
 	public Etudiant() {
 		super();
  	}
 
-	public Etudiant(String nom, Date dateNaissance, String email, String photo) {
+	public Etudiant(String nom, Date dateNaissance, String email, String picture) {
 		super();
 		this.nom = nom;
 		this.dateNaissance = dateNaissance;
 		this.email = email;
-		this.photo = photo;
+ 		this.picture = picture;
 	}
 
 	public Long getId() {
@@ -72,19 +75,13 @@ public class Etudiant implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getPhoto() {
-		return photo;
+ 	 
+	public String getPicture() {
+		return picture;
 	}
 
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
-	
-	
-	public void test() {
-		System.out.println("ceci la classe Etudiant");
-	}
-	
 
 }

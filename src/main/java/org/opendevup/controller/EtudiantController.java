@@ -1,5 +1,7 @@
 package org.opendevup.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,6 +9,7 @@ import javax.validation.Valid;
 import org.opendevup.dao.EtudiantRepository;
 import org.opendevup.entities.Etudiant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,8 @@ public class EtudiantController {
 	
 	@Autowired
 	private EtudiantRepository etudiantRepository;
+	@Value("${dir.images}")
+	private String imageDir;
 		
 	@RequestMapping(value = "/Index")
 	public String Index(Model model,
@@ -53,10 +58,16 @@ public class EtudiantController {
 	
 	@RequestMapping(value = "/saveEtudiant",method = RequestMethod.POST)
 	public String save(@Valid Etudiant etudiant, BindingResult bindingResult,
-			@RequestParam("photo") MultipartFile file) {
+			@RequestParam("photo") MultipartFile file) throws Exception {
 		System.out.println("bindingresult output "+bindingResult.hasErrors());
 		if(bindingResult.hasErrors()) {
 			return "formEtudiant";
+		}
+		if(!file.isEmpty()) {
+			etudiant.setPicture(file.getOriginalFilename());
+			System.out.println(file.getOriginalFilename());
+			System.out.println("System.getProperty(user.home) "+System.getProperty("user.home"));
+			file.transferTo(new File(imageDir+file.getOriginalFilename()));
 		}
 		etudiantRepository.save(etudiant);
 		return "redirect:Index";
