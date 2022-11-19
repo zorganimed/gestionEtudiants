@@ -1,8 +1,10 @@
 package org.opendevup.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import javax.validation.Valid;
 import org.apache.commons.io.IOUtils;
 import org.opendevup.dao.EtudiantRepository;
 import org.opendevup.entities.Etudiant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -29,6 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(value = "/Etudiant")
 public class EtudiantController {
 	
+	private static final Logger logger = LoggerFactory
+			.getLogger(EtudiantController.class);
 	@Autowired
 	private EtudiantRepository etudiantRepository;
 	@Value("${dir.images}")
@@ -120,18 +126,22 @@ public class EtudiantController {
 		
 		File dossier = new File(imageDir);
 		if(!dossier.exists()) {
-			System.out.println("ajout de dossier ");
 			dossier.mkdir();	
 		}
+		byte[] bytes = file.getBytes();
 		File fileupdate = new File(imageDir+etudiant.getId());
-		if(fileupdate.exists()) {
-			System.out.println("suppression de l'image "+etudiant.getId());
-			fileupdate.delete();
-		}
+		BufferedOutputStream stream = new BufferedOutputStream(
+				new FileOutputStream(fileupdate));
+		stream.write(bytes);
+		stream.close();
+
+		logger.info("Server File Location="
+				+ fileupdate.getAbsolutePath());
+
+ 		 /*
 		if(!file.isEmpty()) {
-			etudiant.setPicture(file.getOriginalFilename());
 			file.transferTo(new File(imageDir+etudiant.getId()));
-		}
+		}*/
 		
 		return "redirect:Index";
 	}
